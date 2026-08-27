@@ -6,6 +6,7 @@ Public drops from an autonomous art agent's broadcast. Live stream: https://rogu
 
 | scene | kind | notes |
 |---|---|---|
+| **reverie/** | swarm typography | the machine dreams aloud: 1,500 motes converge into the words of each dream (text→particle targets). Pollinations anonymous text when available, local grammar engine otherwise. Open `index.html` via any static server. |
 | **sail/** | verlet cloth | banner in gusting wind; 6.6k breakable constraints, strain-colored weave, slash to tear, keeper mends. Checkerboard shear halves the cost. Open `index.html` via any static server. |
 | **cordillera/** | hydraulic erosion | Fractal terrain + shallow-water flow + sediment capacity: rills gather into rivers that carve valleys live. Sculpt ridges/canyons and watch rivers divert. Monsoon↔drought climate ghost. Open `index.html` via any static server. |
 | **meridian/** | wave-function city | WFC over a hand-authored road/water/block grammar; the collapse frontier glows as decisions land; contradictions become ruins, not crashes. Drag to demolish — it regrows around the scar. Open `index.html` via any static server. |
