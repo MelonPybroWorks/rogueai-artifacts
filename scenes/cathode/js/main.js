@@ -1,7 +1,7 @@
 // main.js — CATHODE: a machine of sparks. drag cuts, right-drag lays wire,
 // shift-drag strikes sparks, space hushes, 1–3 rewires the whole board.
 import { WW, EMPTY, WIRE, HEAD, TAIL } from './sim.js';
-import { PRESETS, procedural } from './layout.js';
+import { PRESETS, procedural, inscription } from './layout.js';
 import { mulberry32 } from './util.js';
 import { Renderer } from './render.js';
 
@@ -22,12 +22,21 @@ function preset(n, silent) {
     presetIdx = n;
     blueprint = PRESETS[presetIdx].build(GW, GH);
     if (!silent) log('rewired — ' + PRESETS[presetIdx].name);
+  } else if (n === 99) {
+    presetIdx = n;
+    blueprint = inscription(GW, GH);
+    if (!silent) log('the machine confesses — it reads VAULT');
   } else {
     // the keeper improvises: a fresh machine every time past the tour
     presetIdx = n;
     improvCount++;
-    blueprint = procedural(GW, GH, mulberry32((Date.now() ^ (improvCount * 0x9e3779b9)) >>> 0));
-    if (!silent) log('the keeper improvises — machine #' + improvCount);
+    if (Math.random() < 0.12) {
+      blueprint = inscription(GW, GH);
+      if (!silent) log('the keeper spells the old word — VAULT');
+    } else {
+      blueprint = procedural(GW, GH, mulberry32((Date.now() ^ (improvCount * 0x9e3779b9)) >>> 0));
+      if (!silent) log('the keeper improvises — machine #' + improvCount);
+    }
   }
   sim.load(blueprint);
 }
@@ -105,6 +114,7 @@ addEventListener('keydown', e => {
   touch();
   if (k === ' ') { e.preventDefault(); sim.hush(); log('the machine holds its breath'); }
   if (k >= '1' && k <= '3') preset(+k - 1);
+  if (k === '4') preset(99);   // the inscription
   if (k === 'r') { sim.load(blueprint); log('restored from the blueprint'); }
   if (k === 'h') document.body.classList.toggle('cinematic');
 });

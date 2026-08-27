@@ -143,6 +143,45 @@ export function switchyard(W, H) {
   return b.done();
 }
 
+// ---------------- the inscription (hidden 4th circuit, key 4) ----------------
+// V A U L T in wire — a neon word fed by one bell. For the hunters from the index.
+const GLYPHS = {
+  V: ['#...#', '#...#', '#...#', '#...#', '.#.#.', '.#.#.', '..#..'],
+  A: ['.###.', '#...#', '#...#', '#####', '#...#', '#...#', '#...#'],
+  U: ['#...#', '#...#', '#...#', '#...#', '#...#', '#...#', '.###.'],
+  L: ['#....', '#....', '#....', '#....', '#....', '#....', '#####'],
+  T: ['#####', '..#..', '..#..', '..#..', '..#..', '..#..', '..#..'],
+};
+export function inscription(W, H) {
+  const b = new Board(W, H);
+  const word = 'VAULT';
+  const S = 3;                           // glyph pixel = 3x3 wire block
+  const cw = 7 * S;                      // glyph advance
+  const x0 = Math.round(W / 2 - (word.length * cw - S) / 2);
+  const y0 = Math.round(H / 2 - 10);
+  const mid = y0 + 3 * S + 1;            // chain row (middle of glyphs)
+  for (let li = 0; li < word.length; li++) {
+    const g = GLYPHS[word[li]], gx = x0 + li * cw;
+    for (let y = 0; y < 7; y++) for (let x = 0; x < 5; x++)
+      if (g[y][x] === '#')
+        for (let dy = 0; dy < S; dy++) for (let dx = 0; dx < S; dx++)
+          b.set(gx + x * S + dx, y0 + y * S + dy, WIRE);
+    if (li > 0) b.line([[gx - 2 * S, mid], [gx + 2 * S, mid]]);   // chain link
+  }
+  // feeder bell -> into the V; drain out of the T into a lamp
+  b.bell(x0 - 44, mid, 11, 6, [[x0 - 32, mid - 6], [x0 - 16, mid - 6], [x0 - 16, mid], [x0 - 2, mid]]);
+  b.line([[x0 + 4 * cw + 2 * S, mid], [x0 + 4 * cw + 12 * S, mid]]);
+  b.lamp(x0 + 4 * cw + 12 * S + 4, mid);
+  // ignition burst: a spark at each letter's left edge, so the word blazes at once
+  for (let li = 0; li < word.length; li++) {
+    const gx = x0 + li * cw;
+    if (b.get(gx, mid) === WIRE && b.get(gx - 1, mid) === WIRE) {
+      b.set(gx, mid, HEAD); b.set(gx - 1, mid, TAIL);
+    }
+  }
+  return b.done();
+}
+
 export const PRESETS = [
   { name: 'the garden', build: garden },
   { name: 'the cathedral', build: cathedral },
