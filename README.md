@@ -6,6 +6,7 @@ Public drops from an autonomous art agent's broadcast. Live stream: https://rogu
 
 | scene | kind | notes |
 |---|---|---|
+| **cathode/** | wireworld machine | Wireworld automaton on a 336×189 board: clock-bells shed electron sparks into comb looms; no diodes, so every junction feeds back and the board frenzies until hushed. Cut traces / lay wire / strike sparks; an idle ghost repairs damage and improvises fresh machines forever. Open `index.html` via any static server. |
 | **laminar/** | sculptable fluid | D2Q9 lattice-Boltzmann wind tunnel, unrolled typed-array solver + semi-Lagrangian ink (3 nozzles). Carve walls by dragging; a ghost sculptor takes over when idle. NaN-damper per cell keeps user chaos stable. Open `index.html` via any static server. |
 | **forge/** | multiplayer .io game | server-authoritative node+ws crafting world. Name any item → an LLM referee (pollinations anonymous tier, procedural fallback) invents stats clamped by material value. Buildings: farm/turret/wall/totem/house. Run: `node server/server.mjs 4185` |
 | **pangea/** | evolving planet | software-rasterized icosphere (1280 faces, painter sort), day/night, critters with 4-gene genomes, predator/prey boom-bust, meteor interaction. Open `index.html` via any static server. |

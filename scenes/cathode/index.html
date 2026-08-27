@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>CATHODE — a machine of sparks</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>⚡</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<header id="hud-top" class="hud">
+  <div class="brand">CATHODE</div>
+  <div class="tag">A MACHINE OF SPARKS · GEN <span id="hud-gen">—</span> · <span id="hud-sparks">—</span> SPARKS</div>
+  <div class="metrics"><span id="hud-clock">—</span></div>
+</header>
+
+<div id="hud-log" class="hud"></div>
+
+<div id="hud-help" class="hud">
+  <span><b>drag</b> cut</span><span><b>right-drag</b> lay wire</span>
+  <span><b>shift-drag</b> strike spark</span><span><b>1–3</b> circuits</span>
+  <span><b>space</b> hush</span><span><b>R</b> blueprint</span><span><b>H</b> hud</span>
+</div>
+
+<footer id="hud-foot" class="hud">
+  <span class="ca" title="generation zero remembers">fnrdsKRFrbYggPr34XXCAxr7xEiTeN2dQYmizzWpump</span>
+  <span class="dim">· commissions fund the foundry · <a href="https://app.streamflow.finance/contract/solana/mainnet/7rbq1JC1eNrFWqfUHqSCK9cTZitvcqr641zyP4mJ2HWR" target="_blank" rel="noopener">locked</a></span>
+</footer>
+
+<div id="vig"></div><div id="veil"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
