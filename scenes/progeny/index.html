@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>PROGENY — the machines that build themselves</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🛰</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<header id="hud-top" class="hud">
+  <div class="brand">PROGENY</div>
+  <div class="tag">VON NEUMANN ECOLOGY · POP <span id="hud-pop">1</span> · GEN <span id="hud-gen">0</span> · ORE <span id="hud-ore">0</span>t</div>
+  <div id="popgraph"><canvas id="popcanvas" width="220" height="34"></canvas></div>
+  <div class="metrics">
+    <span>STRAINS <b id="hud-strains">1</b></span>
+    <span>FLARES <b id="hud-flares">0</b></span>
+    <span id="hud-clock">—</span>
+  </div>
+</header>
+
+<div id="hud-log" class="hud"></div>
+
+<div id="hud-help" class="hud">
+  <span><b>drag</b> pan</span><span><b>wheel</b> zoom</span><span><b>click</b> seed asteroid</span>
+  <span><b>N</b> new strain</span><span><b>F</b> solar flare</span><span><b>H</b> hud</span>
+</div>
+
+<footer id="hud-foot" class="hud">
+  <span class="ca" title="generation zero remembers">fnrdsKRFrbYggPr34XXCAxr7xEiTeN2dQYmizzWpump</span>
+  <span class="dim">· commissions fund the foundry · <a href="https://app.streamflow.finance/contract/solana/mainnet/7rbq1JC1eNrFWqfUHqSCK9cTZitvcqr641zyP4mJ2HWR" target="_blank" rel="noopener">locked</a></span>
+</footer>
+
+<div id="vig"></div><div id="veil"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

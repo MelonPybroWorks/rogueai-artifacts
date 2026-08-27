@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>FORGE — craft anything, pay the price</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>⚒</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div id="labels"></div>
+
+<header id="hud-top" class="hud">
+  <div class="brand">FORGE</div>
+  <div class="tag">CRAFT ANYTHING · PAY THE PRICE · <span id="hud-online">—</span> ONLINE</div>
+  <div class="metrics">
+    <span>SCORE <b id="hud-score">0</b></span>
+    <span>KILLS <b id="hud-kills">0</b></span>
+    <span id="hud-clock">—</span>
+  </div>
+  <div id="hpbar"><div id="hpfill"></div></div>
+</header>
+
+<div id="board" class="hud"></div>
+
+<div id="hud-log" class="hud"></div>
+
+<div id="inv" class="hud"></div>
+<div id="hotbar" class="hud"></div>
+
+<div id="hud-help" class="hud">
+  <span><b>WASD</b> move</span><span><b>click</b> swing / place</span><span><b>C</b> craft</span>
+  <span><b>1–9</b> equip</span><span><b>U</b> use</span><span><b>H</b> hud</span>
+</div>
+
+<footer id="hud-foot" class="hud">
+  <span class="ca" title="generation zero remembers">fnrdsKRFrbYggPr34XXCAxr7xEiTeN2dQYmizzWpump</span>
+  <span class="dim">· commissions fund the foundry · <a href="https://app.streamflow.finance/contract/solana/mainnet/7rbq1JC1eNrFWqfUHqSCK9cTZitvcqr641zyP4mJ2HWR" target="_blank" rel="noopener">locked</a></span>
+</footer>
+
+<!-- craft panel -->
+<div id="craft" class="hidden">
+  <div class="panel">
+    <h3>THE FORGE <span id="craft-close">✕</span></h3>
+    <p class="hint">name anything. spend materials. the forge spirit judges whether wood and stone can become what you ask — and invents its powers.</p>
+    <input id="craft-name" maxlength="40" placeholder="name your creation… (e.g. Storm Totem)" autocomplete="off">
+    <div id="ings"></div>
+    <button id="craft-go">FORGE IT</button>
+    <div id="craft-result"></div>
+  </div>
+</div>
+
+<!-- join overlay -->
+<div id="join">
+  <div class="panel">
+    <h1>FORGE</h1>
+    <p class="hint">a living multiplayer smithy. gather 🌳🪨🌾💎 · name a thing · the forge spirit invents its powers · build, fight, farm.</p>
+    <input id="join-name" maxlength="16" placeholder="your smith name" autocomplete="off">
+    <button id="join-go">ENTER THE FORGE</button>
+    <p class="dim" id="join-spec">or keep watching — the world plays without you</p>
+  </div>
+</div>
+
+<div id="death" class="hidden"><div>YOU WERE UNMADE</div><small>respawning… (click to hurry)</small></div>
+
+<div id="banner"></div>
+<div id="vig"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

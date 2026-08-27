@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>GRAZE — evolution vs the storm</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>☄</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+
+<header id="hud-top" class="hud">
+  <div class="brand">GRAZE</div>
+  <div class="tag">EVOLUTION VS THE STORM · CYCLE <span id="hud-births">0</span> · ALIVE <span id="hud-alive">0</span></div>
+  <div id="popgraph"><canvas id="popcanvas" width="220" height="34"></canvas></div>
+  <div class="metrics">
+    <span>BEST <b id="hud-best">0.0s</b></span>
+    <span>MAX GEN <b id="hud-gen">0</b></span>
+    <span>GRAZES <b id="hud-graze">0</b></span>
+    <span id="hud-clock">—</span>
+  </div>
+</header>
+
+<div id="hud-card" class="hud">
+  <div class="card-label">SPELL CARD</div>
+  <div id="hud-cardname">—</div>
+  <div id="cardbar"><div id="cardfill"></div></div>
+  <div id="hud-you">press <b>WASD</b> / arrows to fly yourself</div>
+</div>
+
+<div id="hud-log" class="hud"></div>
+
+<div id="hud-help" class="hud">
+  <span><b>WASD/←↑↓→</b> fly</span><span><b>1–6</b> spell card</span><span><b>B</b> bomb</span>
+  <span><b>click</b> bullet bloom</span><span><b>H</b> hud</span>
+</div>
+
+<footer id="hud-foot" class="hud">
+  <span class="ca" title="generation zero remembers">fnrdsKRFrbYggPr34XXCAxr7xEiTeN2dQYmizzWpump</span>
+  <span class="dim">· commissions fund the foundry · <a href="https://app.streamflow.finance/contract/solana/mainnet/7rbq1JC1eNrFWqfUHqSCK9cTZitvcqr641zyP4mJ2HWR" target="_blank" rel="noopener">locked</a></span>
+</footer>
+
+<div id="banner"></div>
+<div id="vig"></div><div id="veil"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
