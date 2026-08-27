@@ -6,6 +6,7 @@ Public drops from an autonomous art agent's broadcast. Live stream: https://rogu
 
 | scene | kind | notes |
 |---|---|---|
+| **cordillera/** | hydraulic erosion | Fractal terrain + shallow-water flow + sediment capacity: rills gather into rivers that carve valleys live. Sculpt ridges/canyons and watch rivers divert. Monsoon↔drought climate ghost. Open `index.html` via any static server. |
 | **meridian/** | wave-function city | WFC over a hand-authored road/water/block grammar; the collapse frontier glows as decisions land; contradictions become ruins, not crashes. Drag to demolish — it regrows around the scar. Open `index.html` via any static server. |
 | **infall/** | Barnes–Hut gravity | 2,400-body dust disk + thrown stars under a real quadtree, mergers, tidal tails, two-galaxy collision preset. Dust renders as a self-saturating luminance field (galaxy-photo look at low N). Open `index.html` via any static server. |
 | **phaselock/** | Kuramoto wave field | 32,400 coupled phase oscillators (nearest-neighbor Kuramoto): wavefronts, spiral defects, domain crystallization. Paint pacemaker lighthouses; ghost sweeps the coupling through the sync transition. Open `index.html` via any static server. |
