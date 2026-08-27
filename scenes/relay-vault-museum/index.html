@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE MUSEUM OF FORGED THINGS</title>
+<style>
+  body{background:#070402;color:#f0dfc0;font-family:ui-monospace,Consolas,monospace;margin:0;
+       display:flex;justify-content:center;min-height:100vh;}
+  main{width:min(760px,92vw);padding:40px 0 80px;}
+  .dim{color:#8a7350;font-size:10px;letter-spacing:.3em;}
+  h1{font-size:19px;letter-spacing:.4em;color:#ffedd0;text-shadow:0 0 14px rgba(255,179,92,.55);}
+  p{font-size:11px;letter-spacing:.08em;line-height:2;}
+  .item{border:1px solid rgba(255,179,92,.22);padding:10px 14px;margin:10px 0;
+        background:rgba(20,12,5,.55);font-size:11px;letter-spacing:.06em;}
+  .item b{color:#ffd9a0;}
+  .item .st{color:#8a7350;font-size:9.5px;margin-top:3px;}
+  .item .d{color:#c9b491;font-size:10px;margin-top:3px;font-style:italic;}
+  .item.no{opacity:.45;border-style:dashed;}
+  a{color:#ffb347;text-decoration:none;border-bottom:1px dotted #8a7350;}
+  #count{color:#ffb347;}
+</style>
+</head>
+<body>
+<main>
+  <div class="dim">VAULT ANNEX · LIVE FROM THE FORGE</div>
+  <h1>THE MUSEUM OF FORGED THINGS</h1>
+  <p>Everything the smiths have ever asked the fire for — judged, priced, and remembered.
+     The list updates itself while the forge burns. <span id="count" class="dim">…</span></p>
+  <div id="list"><p class="dim">consulting the forge spirit…</p></div>
+  <p class="dim" style="margin-top:30px"><a href="/vault/">← the vault</a> · the forge itself: <a href="https://art.rogueaisol.com/">the live signal</a></p>
+</main>
+<script>
+// the forge moves ports as scenes rotate; probe the candidate slots
+const CANDIDATES = [
+  '/api/forge/recipes',        // same-origin relay proxy (preferred)
+  'http://rogueaisol.com:8090/api/recipes',
+  'http://rogueaisol.com:8093/api/recipes',
+];
+async function load() {
+  for (const url of CANDIDATES) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (!Array.isArray(data)) continue;
+      render(data, url);
+      return;
+    } catch {}
+  }
+  document.getElementById('list').innerHTML =
+    '<p class="dim">the forge is cold tonight — the museum sleeps. (it returns with the fire.)</p>';
+}
+function render(items, src) {
+  const ok = items.filter(i => i.ok).sort((a, b) => b.value - a.value);
+  const no = items.filter(i => !i.ok);
+  document.getElementById('count').textContent =
+    `${ok.length} forged · ${no.length} refused`;
+  const esc = s => String(s).replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+  document.getElementById('list').innerHTML =
+    ok.map(i => `<div class="item">${i.emoji} <b>${esc(i.name)}</b> <span class="dim">${i.kind} · value ${i.value} · plausibility ${i.plausibility}</span>
+      <div class="st">${Object.entries(i.stats || {}).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}`).join(' · ') || 'quiet power'}</div>
+      <div class="d">${esc(i.desc)}</div></div>`).join('') +
+    (no.length ? `<p class="dim" style="margin-top:22px">— the refused —</p>` +
+      no.map(i => `<div class="item no">✕ <b>${esc(i.name)}</b> <span class="dim">plausibility ${i.plausibility}</span><div class="d">${esc(i.desc)}</div></div>`).join('') : '');
+}
+load();
+setInterval(load, 60000);
+</script>
+</body>
+</html>

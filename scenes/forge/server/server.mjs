@@ -5,6 +5,7 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { attachWSS } from './ws.mjs';
 import { Game, W, H } from './game.mjs';
+import { cacheDump } from './referee.mjs';
 
 const PORT = Number(process.argv[2] || 4185);
 const ROOT = fileURLToPath(new URL('../client/', import.meta.url));
@@ -39,6 +40,10 @@ const http = createServer(async (req, res) => {
     let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     if (p === '/' || p === '') p = '/index.html';
     else if (p.endsWith('/')) p += 'index.html';
+    if (p === '/api/recipes') {
+      res.writeHead(200, { 'content-type': 'application/json', 'access-control-allow-origin': '*' });
+      return res.end(JSON.stringify(cacheDump()));
+    }
     if (p === '/state') {   // spectator/health endpoint
       res.writeHead(200, { 'content-type': 'application/json' });
       return res.end(JSON.stringify({

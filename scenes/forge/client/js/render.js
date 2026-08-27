@@ -150,6 +150,12 @@ export class Renderer {
       softDisc(buf, W, H, sx | 0, sy | 0, r * 3.2 | 0, px(255, 180, 100), 14);
       // hp tick
       if (hp < 100) lineA(buf, W, H, sx - 8, sy - r - 5, sx - 8 + 16 * hp / 100, sy - r - 5, px(255, 110, 90), 220);
+      // gather progress arc over my own head
+      if (id === st.myId && st.meGather > 0) {
+        const ga = st.meGather * TAU;
+        for (let a2 = -Math.PI / 2; a2 < ga - Math.PI / 2; a2 += 0.3)
+          plotA(buf, W, H, sx + Math.cos(a2) * (r + 4), sy + Math.sin(a2) * (r + 4), px(255, 220, 140), 220);
+      }
     }
 
     // 7) swing arcs + projectile tracers

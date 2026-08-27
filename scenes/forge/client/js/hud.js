@@ -18,6 +18,9 @@ export class Hud {
     this._craftEls();
     this.craftOpen = false;
     this._sel = { wood: 0, stone: 0, fiber: 0, crystal: 0 };
+    this.mm = document.getElementById('minimap');
+    this.mmx = this.mm.getContext('2d');
+    this._mmT = 0;
   }
 
   _craftEls() {
@@ -51,6 +54,7 @@ export class Hud {
 
   _submitCraft() {
     if (!this._me) return;
+    if (this._me.craftCD > 0) { this.resultEl.innerHTML = `<span class="no">the forge is cooling… ${this._me.craftCD.toFixed(0)}s</span>`; return; }
     const name = this.nameEl.value.trim();
     if (!name) { this.resultEl.innerHTML = '<span class="no">the forge needs a name.</span>'; return; }
     const total = Object.values(this._sel).reduce((a, b) => a + b, 0);
@@ -99,6 +103,13 @@ export class Hud {
 
   step(dt, st) {
     const me = this._me;
+    // craft cooldown on the button
+    const go = document.getElementById('craft-go');
+    if (go && me && this.craftOpen) {
+      const cd = me.craftCD || 0;
+      const want = cd > 0.1 ? `COOLING ${cd.toFixed(0)}s` : 'FORGE IT';
+      if (go.textContent !== want) go.textContent = want;
+    }
     // inventory chips
     let invHtml = '';
     for (const [r, e] of RES) invHtml += `<span class="chip">${e} ${me ? me.inv[r] || 0 : 0}</span>`;
@@ -112,7 +123,9 @@ export class Hud {
     if (me) {
       let hb = '';
       me.items.forEach((it, i) => {
-        hb += `<div class="slot ${me.equip === i ? 'eq' : ''}" data-i="${i}"><span class="k">${i + 1}</span>${it.emoji}<span class="nm">${it.name}</span></div>`;
+        const stats = Object.entries(it.stats || {}).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}`).join(' · ');
+        const title = `${it.name} — ${it.kind}\n${stats || 'quiet power'}\n${it.desc || ''}${it.kind === 'consumable' ? '\n(U to use)' : it.kind === 'building' ? '\n(equip, click ground to place)' : ''}`;
+        hb += `<div class="slot ${me.equip === i ? 'eq' : ''}" data-i="${i}" title="${title.replace(/"/g, '&quot;')}"><span class="k">${i + 1}</span>${it.emoji}<span class="nm">${it.name}</span></div>`;
       });
       this._html(this.el.hotbar, hb);
       for (const slot of this.el.hotbar.querySelectorAll('.slot'))
@@ -126,8 +139,8 @@ export class Hud {
     this._text(this.el.online, String(st.players.filter(p => !p[7]).length + st.players.filter(p => p[7]).length));
     this.el.hpfill.style.width = me ? Math.max(0, me.hp / me.maxHp * 100) + '%' : '0%';
 
-    // leaderboard (top 6 by score)
-    const rows = [...st.players].sort((a, b) => b[8] - a[8]).slice(0, 6);
+    // leaderboard (top 6 by score; ghosts sit out)
+    const rows = st.players.filter(p => p[5] !== 2).sort((a, b) => b[8] - a[8]).slice(0, 6);
     let bh = '<div class="hd">SMITHS</div>';
     for (const p of rows) bh += `<div class="${p[0] === st.myId ? 'me' : ''}">${p[6]} ${p[8]}${p[9] ? ' ⚔' + p[9] : ''}</div>`;
     this._html(this.el.board, bh);
@@ -135,6 +148,10 @@ export class Hud {
     // death overlay
     const dead = me && st.players.find(p => p[0] === st.myId && p[5] === 0);
     this.el.death.classList.toggle('hidden', !dead);
+
+    // minimap @ 3Hz
+    this._mmT += dt;
+    if (this._mmT > 0.33) { this._mmT = 0; this._minimap(st); }
 
     if (this._bannerT > 0) {
       this._bannerT -= dt;
@@ -155,6 +172,23 @@ export class Hud {
         .map(it => `<div class="ev ${it.cls}" style="opacity:${(it.op ?? 1).toFixed(2)}">${it.msg}</div>`).join('');
       this._dirty = false;
     }
+  }
+
+  _minimap(st) {
+    const c = this.mmx, S = this.mm.width;
+    const k = S / 3600;
+    c.fillStyle = 'rgba(10,6,3,0.9)'; c.fillRect(0, 0, S, S);
+    const dot = (x, y, col, r = 1.4) => { c.fillStyle = col; c.fillRect(x * k - r / 2, y * k - r / 2, r, r); };
+    const RES_COL = { wood: '#4a8a3a', stone: '#8a8a96', fiber: '#c8b860', crystal: '#60d8f0' };
+    for (const nd of st.nodes) if (nd[4] > 0) dot(nd[2], nd[3], RES_COL[nd[1]] || '#888', nd[1] === 'crystal' ? 2 : 1.2);
+    for (const b of st.buildings) dot(b[4], b[5], '#ffb35c', 2.6);
+    for (const p of st.players) {
+      if (p[5] !== 1) continue;
+      dot(p[1], p[2], p[0] === st.myId ? '#ffffff' : p[7] ? '#7a6a8a' : '#ff7a6a', p[0] === st.myId ? 3 : 2.2);
+    }
+    // view rect
+    c.strokeStyle = 'rgba(255,255,255,0.25)';
+    c.strokeRect((st.camX || 1800) * k - 20, (st.camY || 1800) * k - 12, 40, 24);
   }
 
   setMe(me) { this._me = me; }

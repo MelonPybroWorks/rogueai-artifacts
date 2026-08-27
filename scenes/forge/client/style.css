@@ -28,6 +28,8 @@ body.cinematic #labels{opacity:.25}
 #hpfill{height:100%;width:100%;background:linear-gradient(90deg,#ff7a6a,#ffb35c);transition:width .2s}
 
 #board{top:18px;right:22px;font-size:9.5px;text-align:right;line-height:1.9;letter-spacing:.12em}
+#minimap{top:150px;right:22px;border:1px solid rgba(255,179,92,.25);background:rgba(10,6,3,.7);
+  image-rendering:pixelated;opacity:.92}
 #board .me{color:var(--accent)}
 #board .hd{color:var(--dim);letter-spacing:.3em}
 

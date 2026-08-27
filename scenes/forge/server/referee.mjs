@@ -96,16 +96,16 @@ async function judgeWithPollinations(name, ings, timeoutMs = 12000) {
 
 // ---------- procedural Forge Spirit (always on) ----------
 const KW = [
-  [/sword|blade|axe|spear|dagger|maul|hammer/i, 'weapon', ['wood', 'stone']],
-  [/bow|sling|wand|staff|rod/i, 'weapon', ['wood', 'crystal']],
-  [/pick|shovel|hoe|saw|hammer|axe|tool|chisel/i, 'tool', ['wood', 'stone']],
-  [/wall|gate|fence|barrier/i, 'building', ['stone']],
-  [/house|hut|home|tent|lodge|cabin/i, 'building', ['wood']],
-  [/farm|garden|field|orchard/i, 'building', ['fiber', 'wood']],
-  [/turret|tower|ballista|cannon/i, 'building', ['stone', 'crystal']],
-  [/totem|shrine|idol|altar|obelisk/i, 'building', ['stone', 'crystal']],
-  [/potion|brew|stew|soup|tea|salve|meal|pie|bread/i, 'consumable', ['fiber']],
-  [/cloak|boots|amulet|ring|charm|robe|hat|crown|armor|shield/i, 'wearable', ['fiber', 'crystal']],
+  [/\b(pick|pickaxe|shovel|hoe|saw|tool|chisel|drill)\b/i, 'tool', ['wood', 'stone']],
+  [/\b(sword|blade|axe|spear|dagger|maul|maul|hammer|pike|whip|scythe|lance)\b/i, 'weapon', ['wood', 'stone']],
+  [/\b(bow|sling|wand|staff|rod|scepter)\b/i, 'weapon', ['wood', 'crystal']],
+  [/\b(wall|gate|fence|barrier|rampart)\b/i, 'building', ['stone']],
+  [/\b(house|hut|home|tent|lodge|cabin|hall|nest|shrine)\b/i, 'building', ['wood']],
+  [/\b(farm|garden|field|orchard|sprinkler)\b/i, 'building', ['fiber', 'wood']],
+  [/\b(turret|tower|ballista|cannon|watchtower|lantern)\b/i, 'building', ['stone', 'crystal']],
+  [/\b(totem|idol|altar|obelisk|monolith)\b/i, 'building', ['stone', 'crystal']],
+  [/\b(potion|brew|stew|soup|tea|salve|meal|pie|bread|tonic|bandage|elixir|medkit)\b/i, 'consumable', ['fiber']],
+  [/\b(cloak|boots|sandals|amulet|ring|charm|robe|hat|crown|armor|shield)\b/i, 'wearable', ['fiber', 'crystal']],
 ];
 const FLAVOR = [
   'the spirit hums: "it will hold."',
@@ -124,7 +124,7 @@ function judgeProcedural(name, ings, rngSeed) {
   let p = 0.5;
   const has = r => (ings[r] || 0) > 0;
   if (wants.length) p += wants.filter(has).length * 0.18;
-  if (kind === 'building') p += v >= 12 ? 0.15 : -0.3;
+  if (kind === 'building') p += v >= 10 ? 0.15 : v >= 5 ? 0 : -0.28;
   if (/legendary|god|infinity|infinite|excalibur|divine|ultimate|cosmic/i.test(name)) p -= 0.45;
   if (has('crystal') && /wand|staff|crystal|magic|arcane/i.test(name)) p += 0.2;
   p += Math.min(0.15, v * 0.008);
@@ -188,4 +188,11 @@ export async function judge(name, ings) {
 }
 
 export function cacheSize() { return Object.keys(cache).length; }
+export function cacheDump() {
+  return Object.values(cache).map(i => ({
+    name: i.name, emoji: i.emoji, kind: i.kind, ok: i.ok,
+    plausibility: i.plausibility, stats: i.stats, desc: i.desc,
+    backend: i.backend, value: i.value,
+  }));
+}
 export { saveCache };

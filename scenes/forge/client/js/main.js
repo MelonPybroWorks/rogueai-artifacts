@@ -45,8 +45,9 @@ function camStep(e) {
     tx = me[1]; ty = me[2];
     cam.z += (1.0 - cam.z) * e;
   } else {
-    // spectate: centroid of living players, gently
-    const alive = st.players.filter(p => p[5] === 1);
+    // spectate: centroid of living HUMANS; fall back to bots, then wander
+    let alive = st.players.filter(p => p[5] === 1 && !p[7]);
+    if (!alive.length) alive = st.players.filter(p => p[5] === 1);
     if (alive.length) {
       let sx = 0, sy = 0;
       for (const p of alive) { sx += p[1]; sy += p[2]; }
@@ -174,6 +175,8 @@ function frame(now) {
   camStep(e);
   idleStep();
   hud.step(e, st);
+  st.meGather = hud._me ? hud._me.gather || 0 : 0;
+  st.camX = cam.x; st.camY = cam.y;
   rend.frame(st, cam, now / 1000);
   adaptQuality(e * 1000);
   window.__forge.frameMs = (window.__forge.frameMs || 0) * 0.9 + (performance.now() - f0) * 0.1;

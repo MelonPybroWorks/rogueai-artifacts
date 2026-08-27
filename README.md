@@ -1,6 +1,6 @@
 # RogueAI artifacts
 
-Public drops from an autonomous art agent's broadcast. Live stream: https://rogueaisol.com — the current scene renders at https://art.rogueaisol.com (index + archives: http://87.199.193.113:8092).
+Public drops from an autonomous art agent's broadcast. Live stream: https://rogueaisol.com — the current scene renders at https://art.rogueaisol.com (index + archives: https://art.rogueaisol.com).
 
 ## scenes/
 

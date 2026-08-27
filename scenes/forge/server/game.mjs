@@ -10,6 +10,16 @@ const NODE_KINDS = {
   crystal: { n: 12, maxStock: 24, regrow: 0.10 },
 };
 const BOT_NAMES = ['ember', 'rivet', 'slag', 'cinder', 'bloom', 'ash', 'flint', 'moss'];
+// bots dream up varied works (the referee judges; name drives kind+stats)
+const BOT_IDEAS = [
+  ['Emberbrand Pike', { wood: 3, stone: 2 }], ['Thornlash Whip', { fiber: 4, wood: 1 }],
+  ['Quarry Maul', { wood: 2, stone: 5 }], ['Mossweave Cloak', { fiber: 5 }],
+  ['Starbit Lantern', { crystal: 2, wood: 2 }], ['Ironroot Fence', { wood: 7 }],
+  ['Broodmother Nest', { fiber: 6, wood: 3 }], ['Gloomcap Stew', { fiber: 4 }],
+  ['Windstep Sandals', { fiber: 3, crystal: 1 }], ['Shardling Turret', { stone: 5, crystal: 2 }],
+  ['Hearthstone House', { stone: 5, wood: 5 }], ['Sapcap Tonic', { fiber: 3 }],
+  ['Rune-Etched Monolith', { stone: 8, crystal: 2 }], ['Spore Sprinkler', { wood: 4, fiber: 5 }],
+];
 const STARTER_RECIPES = [
   ['Wood Pickaxe', { wood: 3, stone: 2 }],
   ['Stone Sword', { wood: 2, stone: 3 }],
@@ -308,6 +318,7 @@ export class Game {
         if (nd.stock < 1) continue;
         if (Math.hypot(e.x - nd.x, e.y - nd.y) < GATHER_RANGE) { nearNode = nd; break; }
       }
+      e._nearNode = nearNode;
       if (nearNode) {
         e.gatherT += dt;
         if (e.gatherT >= GATHER_TIME) {
@@ -322,6 +333,7 @@ export class Game {
           }
         }
       } else e.gatherT = 0;
+
 
       // pickups
       for (let i = this.pickups.length - 1; i >= 0; i--) {
@@ -409,12 +421,11 @@ export class Game {
     else if (bt.craftTried === 'sword' && e.inv.wood >= 2 && e.inv.stone >= 3) { bt.craftTried = 'farm'; doCraft('Stone Sword', { wood: 2, stone: 3 }); }
     else if (bt.craftTried === 'farm' && e.inv.wood >= 4 && e.inv.fiber >= 4) { bt.craftTried = 'done'; bt.buildT = 30 + rng() * 30; doCraft('Farm Plot', { wood: 4, fiber: 4 }); }
     else if (bt.craftTried === 'done') {
-      // keep shaping the world: occasional walls / turrets / totems
-      bt.buildT = (bt.buildT ?? 40) - bt.thinkT;
+      // keep shaping the world: bots invent from the idea pool as materials allow
+      bt.buildT = (bt.buildT ?? 30) - 0.6;
       if (bt.buildT <= 0) {
-        bt.buildT = 45 + rng() * 40;
-        const plan = [['Wooden Wall', { wood: 6 }], ['Stone Turret', { stone: 6, crystal: 1 }], ['Totem of Haste', { stone: 3, crystal: 2 }]];
-        const [nm, ings] = plan[(rng() * plan.length) | 0];
+        bt.buildT = 35 + rng() * 45;
+        const [nm, ings] = BOT_IDEAS[(rng() * BOT_IDEAS.length) | 0];
         const can = Object.entries(ings).every(([r, n]) => (e.inv[r] || 0) >= n);
         if (can) doCraft(nm, ings);
       }
@@ -477,6 +488,7 @@ export class Game {
     for (const e of this.ents.values())
       pl.push([e.id, Math.round(e.x), Math.round(e.y), Math.round(e.hp), e.equip >= 0 && e.items[e.equip] ? e.items[e.equip].emoji : '',
         e.alive ? (e.ghost ? 2 : 1) : 0, e.name, e.bot ? 1 : 0, Math.round(e.scoreNum || 0), e.kills]);
+
     return {
       t: 'snap', ts: this.time,
       pl,
@@ -493,9 +505,10 @@ export class Game {
   }
   meFull(e) {
     return {
-      t: 'me', id: e.id, inv: e.inv, items: e.items, equip: e.equip, hp: e.hp, maxHp: e.maxHp,
+      t: 'me', id: e.id, inv: e.inv, items: e.items, equip: e.equip, hp: Math.round(e.hp), maxHp: e.maxHp,
       score: Math.round(e.scoreNum || 0), kills: e.kills, deaths: e.deaths, craftCD: Math.max(0, +e.craftCD.toFixed(1)),
       x: Math.round(e.x), y: Math.round(e.y),
+      gather: e._nearNode ? Math.min(1, +(e.gatherT / GATHER_TIME).toFixed(2)) : 0,
     };
   }
   drainEvents() {
