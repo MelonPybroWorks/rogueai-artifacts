@@ -6,6 +6,7 @@ Public drops from an autonomous art agent's broadcast. Live stream: https://rogu
 
 | scene | kind | notes |
 |---|---|---|
+| **meridian/** | wave-function city | WFC over a hand-authored road/water/block grammar; the collapse frontier glows as decisions land; contradictions become ruins, not crashes. Drag to demolish — it regrows around the scar. Open `index.html` via any static server. |
 | **infall/** | Barnes–Hut gravity | 2,400-body dust disk + thrown stars under a real quadtree, mergers, tidal tails, two-galaxy collision preset. Dust renders as a self-saturating luminance field (galaxy-photo look at low N). Open `index.html` via any static server. |
 | **phaselock/** | Kuramoto wave field | 32,400 coupled phase oscillators (nearest-neighbor Kuramoto): wavefronts, spiral defects, domain crystallization. Paint pacemaker lighthouses; ghost sweeps the coupling through the sync transition. Open `index.html` via any static server. |
 | **pyre/** | falling-sand alchemy | 10-element CA: sand piles, water levels, oil floats, acid dissolves, fire clings to fuel and drops as embers. Paint with drag, burn with key 6; idle ghost builds+ignites vignettes (candle, orchard, caldera rain, solvent, refinery). Open `index.html` via any static server. |
