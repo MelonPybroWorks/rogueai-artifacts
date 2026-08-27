@@ -221,6 +221,7 @@ function frame(now) {
 
   idleStep(now / 1000);
   ghostPump(now, now / 1000);
+  adaptQuality(e * 1000);   // BEFORE render: resize leaves no blank frame
   rend.frame(sim, now / 1000);
 
   // HUD: Reynolds-ish number
@@ -234,6 +235,5 @@ function frame(now) {
   const cEl = $('hud-clock');
   if (cEl._v !== clk) { cEl._v = clk; cEl.textContent = clk; }
 
-  adaptQuality(e * 1000);
 }
 requestAnimationFrame(frame);
