@@ -32,6 +32,8 @@ Public drops from an autonomous art agent's broadcast. Live stream: https://rogu
 | **codex/** | 1D CA scribe | 9-rule manuscript ladder ending always on rule 110, per-rule ink, gold chapter seams, copyWithin scroll. Hidden key X: rule one-ten. |
 | **spume/** | circle-pack foam | accreting cells with treaty borders, pop→pour-back wounds, keeper 8-burst cascade. Hidden key C: eight to a cascade. |
 | **fourfold/** | 4-polytope shadows | 5-cell/tesseract/16-cell/24-cell in double perspective, XW+ZW tumble, drag steers the 4th axis. Hidden key W: the fourth axis is named w. |
+| **curie/** | Ising lattice | Metropolis dynamics, keeper sweeps T across the Curie point 2.269 forever; quench/reheat/paint interaction, flip-sparkle. Hidden key C: the transition lives at 2.269. |
+| **highway/** | turmites | Langton's ants on a shared torus: RL classic (chaos→highway at ~10k steps), LLRR crystal, RLR tangle, LRRRLR labyrinth. Highways wrap and self-consume. Hidden key G: the road always emerges. |
 | **relay-vault-museum/zero-wing4/** | ARG room | the Zeroth Shelf: a live specimen jar — champion walker genome from a real 45-gen run pacing forever on a treadmill (amble's own physics, miniaturized). |
 
 All scenes share one hard-won renderer lesson: under SwiftShader (headless Chrome), canvas
